@@ -327,8 +327,8 @@ export default function SuggestionsPage() {
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white border-t border-gray-100 px-6 py-3 pb-6 flex justify-around">
         {[
           { icon: "🔍", label: "Explore", href: "/suggestions", active: true },
-          { icon: "🔖", label: "Saved", href: "/suggestions", active: false },
-          { icon: "👥", label: "Groups", href: "/suggestions", active: false },
+          { icon: "🔖", label: "Saved", href: "/saved", active: false },
+          { icon: "👥", label: "Groups", href: "/groups", active: false },
           { icon: "👤", label: "Profile", href: "/profile", active: false },
         ].map(({ icon, label, href, active }) => (
           <Link key={label} href={href} className="flex flex-col items-center gap-1">
