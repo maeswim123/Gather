@@ -22,6 +22,7 @@ const events = [
     community: "All welcome",
     communityIcon: "🌍",
     timeFilters: ["Tonight"],
+    categories: ["Music", "Food"],
   },
   {
     id: 2,
@@ -38,6 +39,7 @@ const events = [
     community: "Women-only",
     communityIcon: "♀",
     timeFilters: ["This Weekend"],
+    categories: ["Creative"],
   },
   {
     id: 3,
@@ -54,6 +56,7 @@ const events = [
     community: "LGBTQ+ inclusive",
     communityIcon: "🏳️‍🌈",
     timeFilters: ["This Weekend"],
+    categories: [],
   },
   {
     id: 4,
@@ -70,6 +73,7 @@ const events = [
     community: "All welcome",
     communityIcon: "🌍",
     timeFilters: ["This Weekend"],
+    categories: ["Food", "Creative"],
   },
   {
     id: 5,
@@ -86,6 +90,7 @@ const events = [
     community: "Men-only",
     communityIcon: "♂",
     timeFilters: ["Tonight"],
+    categories: ["Food"],
   },
   {
     id: 6,
@@ -102,6 +107,7 @@ const events = [
     community: "Sober & mindful",
     communityIcon: "🌿",
     timeFilters: ["This Weekend"],
+    categories: ["Food", "Outdoors"],
   },
   {
     id: 7,
@@ -118,6 +124,7 @@ const events = [
     community: "All welcome",
     communityIcon: "🌍",
     timeFilters: ["Tonight"],
+    categories: ["Music"],
   },
   {
     id: 8,
@@ -134,6 +141,7 @@ const events = [
     community: "All welcome",
     communityIcon: "🌍",
     timeFilters: ["This Weekend"],
+    categories: ["Food"],
   },
   {
     id: 9,
@@ -150,6 +158,7 @@ const events = [
     community: "BIPOC community",
     communityIcon: "✊",
     timeFilters: ["This Weekend"],
+    categories: ["Outdoors"],
   },
 ];
 
@@ -175,13 +184,15 @@ export default function SuggestionsPage() {
     });
   };
 
+  const timeOnlyFilters = ["Tonight", "This Weekend"];
+  const categoryOnlyFilters = ["Music", "Food", "Outdoors", "Creative"];
+
   const allowedCommunities = communityMap[communityFilter] ?? [];
   const filtered = events.filter((e) => {
     const communityMatch = allowedCommunities.length === 0 || allowedCommunities.includes(e.community);
-    const timeMatch = activeFilter === "All" || activeFilter === "Music" || activeFilter === "Food" || activeFilter === "Outdoors" || activeFilter === "Creative"
-      ? true
-      : e.timeFilters.includes(activeFilter);
-    return communityMatch && timeMatch;
+    const timeMatch = timeOnlyFilters.includes(activeFilter) ? e.timeFilters.includes(activeFilter) : true;
+    const categoryMatch = categoryOnlyFilters.includes(activeFilter) ? e.categories.includes(activeFilter) : true;
+    return communityMatch && timeMatch && categoryMatch;
   });
 
   return (
