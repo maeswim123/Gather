@@ -64,18 +64,13 @@ const communities = [
 ];
 
 export default function CommunityPage() {
-  const [selected, setSelected] = useState<Set<string>>(new Set(["all"]));
+  const [selected, setSelected] = useState<Set<string>>(new Set());
   const router = useRouter();
 
   const toggle = (id: string) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (id === "all") {
-        return new Set(["all"]);
-      }
-      next.delete("all");
       next.has(id) ? next.delete(id) : next.add(id);
-      if (next.size === 0) next.add("all");
       return next;
     });
   };
@@ -122,12 +117,12 @@ export default function CommunityPage() {
                   <div className={`font-semibold text-base ${on ? "text-violet-900" : "text-gray-900"}`}>{label}</div>
                   <div className="text-gray-400 text-sm">{desc}</div>
                 </div>
-                <div className={`w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${
+                <div className={`w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center ${
                   on ? "border-violet-600 bg-violet-600" : "border-gray-300"
                 }`}>
                   {on && (
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M2 5l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
+                      <path d="M1 4l3 3.5L10 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   )}
                 </div>
@@ -146,9 +141,9 @@ export default function CommunityPage() {
       <div className="px-6 pb-10 pt-4 bg-white border-t border-gray-50">
         <button
           onClick={() => router.push("/onboarding/availability")}
-          className="w-full py-4 rounded-2xl font-semibold text-lg bg-violet-600 text-white"
+          className={`w-full py-4 rounded-2xl font-semibold text-lg transition-colors ${selected.size > 0 ? "bg-violet-600 text-white" : "bg-gray-100 text-gray-400"}`}
         >
-          Continue · {selected.size} {selected.size === 1 ? "community" : "communities"} selected
+          {selected.size > 0 ? `Continue · ${selected.size} ${selected.size === 1 ? "community" : "communities"} selected` : "Continue"}
         </button>
       </div>
     </div>
