@@ -16,8 +16,14 @@ const intentions = [
 ];
 
 export default function IntentionPage() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
+
+  const toggle = (id: string) => {
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
+    );
+  };
 
   return (
     <div className="flex flex-col flex-1 bg-white">
@@ -40,15 +46,15 @@ export default function IntentionPage() {
 
       <div className="flex-1 px-6 overflow-y-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-1">What are you hoping for?</h2>
-        <p className="text-gray-500 mb-6">Pick the one that feels most true right now.</p>
+        <p className="text-gray-500 mb-6">Pick all that apply.</p>
 
         <div className="flex flex-col gap-2.5 pb-4">
           {intentions.map(({ id, label, emoji, desc }) => {
-            const on = selected === id;
+            const on = selected.includes(id);
             return (
               <button
                 key={id}
-                onClick={() => setSelected(id)}
+                onClick={() => toggle(id)}
                 className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl border-2 text-left transition-all ${
                   on
                     ? "border-violet-500 bg-violet-50"
@@ -60,8 +66,12 @@ export default function IntentionPage() {
                   <div className={`font-semibold text-base ${on ? "text-violet-900" : "text-gray-900"}`}>{label}</div>
                   <div className="text-gray-400 text-sm">{desc}</div>
                 </div>
-                <div className={`w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${on ? "border-violet-600 bg-violet-600" : "border-gray-300"}`}>
-                  {on && <div className="w-2 h-2 rounded-full bg-white" />}
+                <div className={`w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center ${on ? "border-violet-600 bg-violet-600" : "border-gray-300"}`}>
+                  {on && (
+                    <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
+                      <path d="M1 4l3 3.5L10 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
                 </div>
               </button>
             );
@@ -72,7 +82,7 @@ export default function IntentionPage() {
       <div className="px-6 pb-10 pt-4 bg-white">
         <button
           onClick={() => router.push("/onboarding/comfort")}
-          className={`w-full py-4 rounded-2xl font-semibold text-lg transition-colors ${selected ? "bg-violet-600 text-white" : "bg-gray-100 text-gray-400"}`}
+          className={`w-full py-4 rounded-2xl font-semibold text-lg transition-colors ${selected.length > 0 ? "bg-violet-600 text-white" : "bg-gray-100 text-gray-400"}`}
         >
           Continue
         </button>
