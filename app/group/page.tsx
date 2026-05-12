@@ -289,7 +289,7 @@ function GroupContent() {
             🔖
           </button>
           <Link
-            href="/reflect"
+            href={`/chat?id=${id}`}
             className="flex-1 bg-violet-600 text-white text-center py-4 rounded-2xl font-semibold text-base"
           >
             Join this Gather →
