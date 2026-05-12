@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +9,7 @@ export default function PhonePage() {
   const [sent, setSent] = useState(false);
   const [code, setCode] = useState("");
   const router = useRouter();
+  const codeInputRef = useRef<HTMLInputElement>(null);
 
   const formatPhone = (val: string) => {
     const digits = val.replace(/\D/g, "").slice(0, 10);
@@ -68,22 +69,37 @@ export default function PhonePage() {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="flex gap-3 justify-center">
+            {/* Digit display — tapping focuses the real input */}
+            <button
+              type="button"
+              onClick={() => codeInputRef.current?.focus()}
+              className="flex gap-3 justify-center w-full"
+            >
               {[0,1,2,3,4,5].map((i) => (
-                <div key={i} className={`w-11 h-14 rounded-xl border-2 flex items-center justify-center text-2xl font-bold text-gray-900 ${code[i] ? "border-violet-500 bg-violet-50" : "border-gray-200"}`}>
+                <div
+                  key={i}
+                  className={`w-11 h-14 rounded-xl border-2 flex items-center justify-center text-2xl font-bold text-gray-900 transition-colors ${
+                    code[i] ? "border-violet-500 bg-violet-50" : "border-gray-200"
+                  }`}
+                >
                   {code[i] || ""}
                 </div>
               ))}
-            </div>
+            </button>
+
+            {/* Visible input — styled to be minimal but fully tappable */}
             <input
+              ref={codeInputRef}
               type="text"
               inputMode="numeric"
               maxLength={6}
               value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0,6))}
-              className="sr-only"
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
               autoFocus
+              className="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 text-center text-lg font-bold tracking-[0.5em] text-gray-900 outline-none focus:border-violet-500 transition-colors"
+              placeholder="000000"
             />
+
             <div className="bg-violet-50 border border-violet-100 rounded-xl px-4 py-2.5 text-center">
               <p className="text-violet-700 text-sm font-medium">Demo code: <span className="font-bold tracking-widest">000000</span></p>
             </div>
