@@ -20,9 +20,15 @@ const energyLevels = [
 ];
 
 export default function ComfortPage() {
-  const [setting, setSetting] = useState<string | null>(null);
+  const [settings2, setSettings2] = useState<string[]>([]);
   const [energy, setEnergy] = useState(1);
   const router = useRouter();
+
+  const toggle = (id: string) => {
+    setSettings2((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
+    );
+  };
 
   return (
     <div className="flex flex-col flex-1 bg-white">
@@ -45,15 +51,15 @@ export default function ComfortPage() {
 
       <div className="flex-1 px-6 overflow-y-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-1">Comfort level</h2>
-        <p className="text-gray-500 mb-6">How do you want the experience to feel?</p>
+        <p className="text-gray-500 mb-6">Pick all that apply.</p>
 
         <div className="flex flex-col gap-2 mb-8">
           {settings.map(({ id, label, emoji, desc }) => {
-            const on = setting === id;
+            const on = settings2.includes(id);
             return (
               <button
                 key={id}
-                onClick={() => setSetting(id)}
+                onClick={() => toggle(id)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-left transition-all ${
                   on ? "border-violet-500 bg-violet-50" : "border-gray-100 bg-gray-50"
                 }`}
@@ -63,8 +69,12 @@ export default function ComfortPage() {
                   <div className={`font-medium text-sm ${on ? "text-violet-900" : "text-gray-800"}`}>{label}</div>
                   <div className="text-gray-400 text-xs">{desc}</div>
                 </div>
-                <div className={`ml-auto w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${on ? "border-violet-600 bg-violet-600" : "border-gray-300"}`}>
-                  {on && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                <div className={`ml-auto w-4 h-4 rounded-md border-2 flex-shrink-0 flex items-center justify-center ${on ? "border-violet-600 bg-violet-600" : "border-gray-300"}`}>
+                  {on && (
+                    <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                      <path d="M1 3l2.5 2.5L8 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
                 </div>
               </button>
             );
