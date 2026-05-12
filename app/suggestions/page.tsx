@@ -21,6 +21,7 @@ const events = [
     match: 97,
     community: "All welcome",
     communityIcon: "🌍",
+    timeFilters: ["Tonight"],
   },
   {
     id: 2,
@@ -36,6 +37,7 @@ const events = [
     match: 94,
     community: "Women-only",
     communityIcon: "♀",
+    timeFilters: ["This Weekend"],
   },
   {
     id: 3,
@@ -51,6 +53,7 @@ const events = [
     match: 92,
     community: "LGBTQ+ inclusive",
     communityIcon: "🏳️‍🌈",
+    timeFilters: ["This Weekend"],
   },
   {
     id: 4,
@@ -66,12 +69,13 @@ const events = [
     match: 91,
     community: "All welcome",
     communityIcon: "🌍",
+    timeFilters: ["This Weekend"],
   },
   {
     id: 5,
     title: "Men's Networking Happy Hour",
     location: "West Loop",
-    date: "Thu, May 14 · 6:30 PM",
+    date: "Tonight · 6:30 PM",
     price: "$10",
     attendees: 13,
     maxAttendees: 20,
@@ -81,6 +85,7 @@ const events = [
     match: 88,
     community: "Men-only",
     communityIcon: "♂",
+    timeFilters: ["Tonight"],
   },
   {
     id: 6,
@@ -96,6 +101,55 @@ const events = [
     match: 85,
     community: "Sober & mindful",
     communityIcon: "🌿",
+    timeFilters: ["This Weekend"],
+  },
+  {
+    id: 7,
+    title: "Open Mic Night at The Promontory",
+    location: "Hyde Park",
+    date: "Tonight · 8:00 PM",
+    price: "$8",
+    attendees: 22,
+    maxAttendees: 40,
+    tags: ["🎤 Open mic", "🎵 Music"],
+    gradient: "from-rose-500 to-orange-500",
+    vibe: "High energy",
+    match: 83,
+    community: "All welcome",
+    communityIcon: "🌍",
+    timeFilters: ["Tonight"],
+  },
+  {
+    id: 8,
+    title: "Sunday Brunch Collective",
+    location: "Logan Square",
+    date: "Sun, May 17 · 11:30 AM",
+    price: "Free",
+    attendees: 7,
+    maxAttendees: 12,
+    tags: ["🍳 Brunch", "☕ Coffee"],
+    gradient: "from-yellow-400 to-amber-500",
+    vibe: "Cozy",
+    match: 81,
+    community: "All welcome",
+    communityIcon: "🌍",
+    timeFilters: ["This Weekend"],
+  },
+  {
+    id: 9,
+    title: "BIPOC Wellness & Yoga Morning",
+    location: "Pilsen",
+    date: "Sat, May 16 · 9:00 AM",
+    price: "Free",
+    attendees: 10,
+    maxAttendees: 18,
+    tags: ["🧘 Wellness", "🌿 Outdoor"],
+    gradient: "from-orange-400 to-red-500",
+    vibe: "Chill",
+    match: 79,
+    community: "BIPOC community",
+    communityIcon: "✊",
+    timeFilters: ["This Weekend"],
   },
 ];
 
@@ -105,7 +159,7 @@ const communityMap: Record<string, string[]> = {
   "Women-only": ["Women-only"],
   "Men-only": ["Men-only"],
   "Sober": ["Sober & mindful"],
-  "BIPOC": ["BIPOC community"],
+  "BIPOC": ["BIPOC community", "All welcome"],
 };
 
 export default function SuggestionsPage() {
@@ -122,9 +176,13 @@ export default function SuggestionsPage() {
   };
 
   const allowedCommunities = communityMap[communityFilter] ?? [];
-  const filtered = events.filter((e) =>
-    allowedCommunities.length === 0 || allowedCommunities.includes(e.community)
-  );
+  const filtered = events.filter((e) => {
+    const communityMatch = allowedCommunities.length === 0 || allowedCommunities.includes(e.community);
+    const timeMatch = activeFilter === "All" || activeFilter === "Music" || activeFilter === "Food" || activeFilter === "Outdoors" || activeFilter === "Creative"
+      ? true
+      : e.timeFilters.includes(activeFilter);
+    return communityMatch && timeMatch;
+  });
 
   return (
     <div className="flex flex-col flex-1 bg-gray-50 min-h-screen">
