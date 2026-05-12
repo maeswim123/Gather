@@ -62,35 +62,45 @@ const slides = [
 
 export default function WelcomePage() {
   const [current, setCurrent] = useState(0);
-  const [fading, setFading] = useState(false);
+  const [next, setNext] = useState<number | null>(null);
+  const [transitioning, setTransitioning] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setFading(true);
+      const nextIndex = (current + 1) % slides.length;
+      setNext(nextIndex);
+      setTransitioning(true);
       setTimeout(() => {
-        setCurrent((prev) => (prev + 1) % slides.length);
-        setFading(false);
-      }, 400);
+        setCurrent(nextIndex);
+        setNext(null);
+        setTransitioning(false);
+      }, 900);
     }, 3200);
     return () => clearInterval(timer);
-  }, []);
+  }, [current]);
 
   const slide = slides[current];
 
   return (
     <div className="flex flex-col flex-1 min-h-screen relative overflow-hidden">
-      {/* Slideshow background */}
+      {/* Slideshow background — current layer */}
       <div
-        className={`absolute inset-0 bg-gradient-to-b ${slide.gradient} transition-opacity duration-400 ${fading ? "opacity-0" : "opacity-100"}`}
-        style={{ transition: "opacity 0.4s ease" }}
+        className={`absolute inset-0 bg-gradient-to-b ${slide.gradient}`}
       />
+      {/* Next slide layer fades in on top */}
+      {next !== null && (
+        <div
+          className={`absolute inset-0 bg-gradient-to-b ${slides[next].gradient}`}
+          style={{ opacity: transitioning ? 1 : 0, transition: "opacity 0.9s ease" }}
+        />
+      )}
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/40" />
 
       {/* Slide content — ghost card showing past event */}
       <div
-        className={`absolute inset-x-6 top-16 transition-opacity duration-400 ${fading ? "opacity-0" : "opacity-100"}`}
-        style={{ transition: "opacity 0.4s ease" }}
+        className={`absolute inset-x-6 top-16`}
+        style={{ opacity: transitioning ? 0 : 1, transition: "opacity 0.5s ease" }}
       >
         <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-5">
           <div className="flex items-center justify-between mb-3">
@@ -117,7 +127,7 @@ export default function WelcomePage() {
           {slides.map((_, i) => (
             <button
               key={i}
-              onClick={() => { setFading(true); setTimeout(() => { setCurrent(i); setFading(false); }, 300); }}
+              onClick={() => { setNext(i); setTransitioning(true); setTimeout(() => { setCurrent(i); setNext(null); setTransitioning(false); }, 900); }}
               className={`rounded-full transition-all ${i === current ? "w-5 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/40"}`}
             />
           ))}
