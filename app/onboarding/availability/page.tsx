@@ -22,8 +22,16 @@ const neighborhoods = ["All Chicago", "Wicker Park", "Logan Square", "River Nort
 export default function AvailabilityPage() {
   const [selectedDates, setSelectedDates] = useState<Set<number>>(new Set());
   const [selectedTimes, setSelectedTimes] = useState<Set<string>>(new Set());
-  const [budget, setBudget] = useState("Flexible");
+  const [budgets, setBudgets] = useState<Set<string>>(new Set());
   const [neighborhood, setNeighborhood] = useState("All Chicago");
+
+  const toggleBudget = (b: string) => {
+    setBudgets((prev) => {
+      const next = new Set(prev);
+      next.has(b) ? next.delete(b) : next.add(b);
+      return next;
+    });
+  };
   const router = useRouter();
 
   const toggleDate = (d: number) => {
@@ -140,20 +148,34 @@ export default function AvailabilityPage() {
 
         {/* Budget */}
         <div className="mb-6">
-          <h3 className="font-semibold text-gray-900 mb-3">Budget</h3>
+          <h3 className="font-semibold text-gray-900 mb-1">How much are you willing to spend?</h3>
+          <p className="text-gray-400 text-sm mb-3">Pick all that work for you</p>
           <div className="flex flex-wrap gap-2">
-            {budgets.map((b) => (
-              <button
-                key={b}
-                onClick={() => setBudget(b)}
-                className={`px-4 py-2 rounded-full text-sm font-medium border-2 transition-all ${
-                  budget === b ? "border-violet-500 bg-violet-600 text-white" : "border-gray-200 bg-gray-50 text-gray-700"
-                }`}
-              >
-                {b}
-              </button>
-            ))}
+            {["Free", "Under $20", "$20–$50", "$50+", "Flexible"].map((b) => {
+              const on = budgets.has(b);
+              return (
+                <button
+                  key={b}
+                  onClick={() => toggleBudget(b)}
+                  className={`px-4 py-2.5 rounded-full text-sm font-medium border-2 transition-all flex items-center gap-1.5 ${
+                    on ? "border-violet-500 bg-violet-600 text-white" : "border-gray-200 bg-gray-50 text-gray-700"
+                  }`}
+                >
+                  {on && (
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                  {b}
+                </button>
+              );
+            })}
           </div>
+          {budgets.size > 0 && (
+            <p className="text-violet-600 text-xs font-medium mt-2">
+              {budgets.size} {budgets.size === 1 ? "option" : "options"} selected
+            </p>
+          )}
         </div>
 
         {/* Neighborhood */}
