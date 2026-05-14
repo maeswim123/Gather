@@ -17,7 +17,7 @@ const times = [
 ];
 
 const budgets = ["Free", "Under $20", "$20–$50", "$50+", "Flexible"];
-const neighborhoods = ["All Chicago", "Wicker Park", "Logan Square", "River North", "Hyde Park", "West Loop"];
+const neighborhoods = ["All Chicago", "Wicker Park", "Logan Square", "River North", "Hyde Park", "West Loop", "Lincoln Park", "Old Town", "Lake View", "Wrigleyville"];
 
 export default function AvailabilityPage() {
   const [selectedDates, setSelectedDates] = useState<Set<number>>(new Set());
