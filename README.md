@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gather
 
-## Getting Started
+Gather is a mobile-first community event prototype for discovering local experiences, meeting new people, and exploring Chicago without overthinking it.
 
-First, run the development server:
+**[View the live prototype](https://gather-sable-seven.vercel.app)**
+
+## What it demonstrates
+
+- Multi-step onboarding for interests, availability, community preferences, and social comfort
+- Curated event discovery with time, category, and community filters
+- Event detail, saved event, group, and chat flows
+- Profile, preference, attendance, and reward interfaces
+- Responsive mobile-first design with reusable React patterns
+
+## Technology
+
+- Next.js 16 and React 19
+- TypeScript
+- Tailwind CSS
+- Bun
+- Vercel
+- Git and GitHub
+- AI-assisted development with Codex and Claude Code
+
+## Current scope
+
+Gather is an interactive product prototype. The user flows and interface are functional, while event, profile, attendance, and chat data are currently seeded in the client. Production authentication, persistent data, real-time messaging, and payment processing are not yet connected.
+
+That distinction is intentional: this version tests the product experience and core interaction model before backend implementation.
+
+## Product flows
+
+The prototype includes:
+
+- Account creation and multi-step onboarding
+- Personalized event suggestions and filters
+- Event groups and simulated group chat
+- Saved events
+- Community and preference controls
+- Attendance feedback and a reward concept
+
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The standard npm workflow also works:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```text
+app/
+  onboarding/    Multi-step onboarding experience
+  suggestions/   Event discovery and filtering
+  group/         Event detail and join flow
+  groups/        Joined groups
+  chat/          Group chat and post-event feedback
+  saved/         Saved events
+  profile/       Preferences, history, and rewards
+  reflect/       Reflection flow
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## AI-assisted development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Codex and Claude Code were used to accelerate interface development, debugging, and iteration. Product decisions, user flows, and final implementation were reviewed and directed by the project team.
 
-## Deploy on Vercel
+## Collaboration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Gather was built collaboratively. The commit history reflects contributions from Mae Moore and Elena Sofia Alick.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Next steps
+
+- Add authentication and persistent user profiles
+- Connect event and preference data to a database
+- Add real-time group messaging
+- Add automated tests and continuous integration
+- Validate the experience through user testing
